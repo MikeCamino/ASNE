@@ -21,6 +21,7 @@
  *******************************************************************************/
 package com.github.gorbin.asne.core;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -112,7 +113,8 @@ public abstract class SocialNetwork {
 
     /*** Shared preferences name */
     private static final String SHARED_PREFERENCES_NAME = "social_networks";
-    protected Fragment mSocialNetworkManager;
+	protected Activity mActivity;
+    //protected Fragment mSocialNetworkManager;
     protected SharedPreferences mSharedPreferences;
     protected Map<String, SocialNetworkListener> mGlobalListeners = new HashMap<String, SocialNetworkListener>();
     protected Map<String, SocialNetworkListener> mLocalListeners = new HashMap<String, SocialNetworkListener>();
@@ -122,9 +124,10 @@ public abstract class SocialNetwork {
      *                 we will want to receice on onActivityResult in out SocialNetworkManager
      *                 fragment
      */
-    protected SocialNetwork(Fragment fragment) {
-        mSocialNetworkManager = fragment;
-        mSharedPreferences = mSocialNetworkManager.getActivity().getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+    protected SocialNetwork(Activity activity) {
+		mActivity = activity;
+        //mSocialNetworkManager = fragment;
+        mSharedPreferences = mActivity.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
     //////////////////// LIFECYCLE ////////////////////

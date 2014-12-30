@@ -147,7 +147,7 @@ public class MainFragment  extends Fragment
         if (mSocialNetworkManager == null) {
             mSocialNetworkManager = new SocialNetworkManager();
 
-            FacebookSocialNetwork fbNetwork = new FacebookSocialNetwork(this, fbScope);
+            FacebookSocialNetwork fbNetwork = new FacebookSocialNetwork(this.getActivity(), fbScope);
             mSocialNetworkManager.addSocialNetwork(fbNetwork);
 
             TwitterSocialNetwork twNetwork = new TwitterSocialNetwork(this, TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET, TWITTER_CALLBACK_URL);
@@ -156,10 +156,10 @@ public class MainFragment  extends Fragment
             LinkedInSocialNetwork liNetwork = new LinkedInSocialNetwork(this, LINKEDIN_CONSUMER_KEY, LINKEDIN_CONSUMER_SECRET, LINKEDIN_CALLBACK_URL, linkedInScope);
             mSocialNetworkManager.addSocialNetwork(liNetwork);
 
-            GooglePlusSocialNetwork gpNetwork = new GooglePlusSocialNetwork(this);
+            GooglePlusSocialNetwork gpNetwork = new GooglePlusSocialNetwork(this.getActivity());
             mSocialNetworkManager.addSocialNetwork(gpNetwork);
 
-            VkSocialNetwork vkNetwork = new VkSocialNetwork(this, VK_KEY, vkScope);
+            VkSocialNetwork vkNetwork = new VkSocialNetwork(this.getActivity(), VK_KEY, vkScope);
             mSocialNetworkManager.addSocialNetwork(vkNetwork);
 
             OkSocialNetwork okNetwork = new OkSocialNetwork(this, OK_APP_ID, OK_PUBLIC_KEY, OK_SECRET_KEY, okScope);

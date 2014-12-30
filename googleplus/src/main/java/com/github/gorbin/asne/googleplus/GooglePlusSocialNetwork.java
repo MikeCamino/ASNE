@@ -80,14 +80,13 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GooglePlay
      * so let's handle state by ourselves
      */
     private static final String SAVE_STATE_KEY_IS_CONNECTED = "GooglePlusSocialNetwork.SAVE_STATE_KEY_OAUTH_TOKEN";
-    private static Activity mActivity;
     private GoogleApiClient googleApiClient;
     private ConnectionResult mConnectionResult;
     private boolean mConnectRequested;
     private Handler mHandler = new Handler();
 
-    public GooglePlusSocialNetwork(Fragment fragment) {
-        super(fragment);
+    public GooglePlusSocialNetwork(Activity activity) {
+        super(activity);
     }
 
     /**
@@ -538,7 +537,6 @@ public class GooglePlusSocialNetwork extends SocialNetwork implements GooglePlay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivity = mSocialNetworkManager.getActivity();
         Plus.PlusOptions plusOptions = new Plus.PlusOptions.Builder()
                 .addActivityTypes(MomentUtil.ACTIONS)
                 .build();

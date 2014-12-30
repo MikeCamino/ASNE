@@ -80,9 +80,12 @@ import java.util.ArrayList;
 public class VkSocialNetwork extends SocialNetwork {
     /*** Social network ID in asne modules, should be unique*/
     public static final int ID = 5;
+
     private static final String SAVE_STATE_KEY_OAUTH_TOKEN = "VkSocialNetwork.SAVE_STATE_KEY_OAUTH_TOKEN";
     private static final String SAVE_STATE_KEY_OAUTH_SECRET = "VkSocialNetwork.SAVE_STATE_KEY_OAUTH_SECRET";
     private static final String SAVE_STATE_KEY_USER_ID = "VkSocialNetwork.SAVE_STATE_KEY_USER_ID";
+	private static final String SAVE_STATE_KEY_USER_EMAIL = "VkSocialNetwork.SAVE_STATE_KEY_USER_EMAIL";
+
     /*** Developer activity*/
     private Activity activity;
     /*** VK app id*/
@@ -91,6 +94,8 @@ public class VkSocialNetwork extends SocialNetwork {
     private VKAccessToken accessToken;
     /*** Id of current user*/
     private String userId;
+	/*** Email */
+	private String email;
     /*** Permissions array*/
     private String[] permissions;
     /*** VK SDK listener to catch authorization @see <a href="http://vkcom.github.io/vk-android-sdk/com/vk/sdk/VKSdkListener.html">VKSdkListener</a>*/
@@ -118,12 +123,14 @@ public class VkSocialNetwork extends SocialNetwork {
                     .putString(SAVE_STATE_KEY_OAUTH_TOKEN, accessToken.accessToken)
                     .putString(SAVE_STATE_KEY_OAUTH_SECRET, accessToken.secret)
                     .putString(SAVE_STATE_KEY_USER_ID, accessToken.userId)
+					.putString(SAVE_STATE_KEY_USER_EMAIL, accessToken.email)
                     .apply();
+			userId = accessToken.userId;
+			email = accessToken.email;
             if (mLocalListeners.get(REQUEST_LOGIN) != null) {
                 ((OnLoginCompleteListener) mLocalListeners.get(REQUEST_LOGIN)).onLoginSuccess(getID());
                 mLocalListeners.remove(REQUEST_LOGIN);
             }
-            userId = accessToken.userId;
         }
 
         @Override
@@ -133,13 +140,15 @@ public class VkSocialNetwork extends SocialNetwork {
                     .putString(SAVE_STATE_KEY_OAUTH_TOKEN, accessToken.accessToken)
                     .putString(SAVE_STATE_KEY_OAUTH_SECRET, accessToken.secret)
                     .putString(SAVE_STATE_KEY_USER_ID, accessToken.userId)
+					.putString(SAVE_STATE_KEY_USER_EMAIL, accessToken.email)
                     .apply();
             userId = accessToken.userId;
+			email = accessToken.email;
         }
     };
 
-    public VkSocialNetwork(Fragment fragment, String key, String[] permissions) {
-        super(fragment);
+    public VkSocialNetwork(Activity activity, String key, String[] permissions) {
+        super(activity);
         this.key = key;
         this.permissions = permissions;
     }
@@ -182,6 +191,14 @@ public class VkSocialNetwork extends SocialNetwork {
             }
         });
     }
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public String getEmail() {
+		return email;
+	}
 
     /**
      * Check is social network connected
@@ -768,7 +785,7 @@ public class VkSocialNetwork extends SocialNetwork {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity = mSocialNetworkManager.getActivity();
+        activity = mActivity;
         VKUIHelper.onCreate(activity);
         VKSdk.initialize(vkSdkListener, key);
         VKSdk.wakeUpSession();
